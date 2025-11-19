@@ -1,5 +1,4 @@
-import six
-from six.moves.urllib.request import urlopen
+from urllib.request import urlopen
 from scrapely import (HtmlPage, Scraper, TemplateMaker, best_match,
                       InstanceBasedLearningExtractor)
 from lxml.html import tostring
@@ -12,9 +11,6 @@ from w3lib.encoding import html_to_unicode
 
 from .htmls import DomTreeBuilder
 from .mdr import MiningDataRegion, MiningDataRecord, MiningDataField
-
-if six.PY3:
-    unicode = str
 
 
 class DeptaTemplateMaker(TemplateMaker):
@@ -153,7 +149,7 @@ class Depta(object):
             if not hasattr(values, '__iter__'):
                 values = [values]
             for value in values:
-                if not isinstance(value, unicode):
+                if not isinstance(value, str):
                     value = value.decode(htmlpage.encoding or 'utf-8')
                 dtm.annotate(field, best_match(value))
         self.scraper.add_template(dtm.get_template())
@@ -170,7 +166,7 @@ class Depta(object):
 
         builder = DomTreeBuilder(html)
         doc = builder.build()
-        page = HtmlPage(body=tostring(doc, encoding=unicode, method='html'))
+        page = HtmlPage(body=tostring(doc, encoding=str, method='html'))
 
         return self._scrape_page(page)
 
@@ -183,6 +179,6 @@ class Depta(object):
 
     def _region_to_htmlpage(self, region):
         seed_body = tostring(region.parent[region.start],
-                             encoding=unicode,
+                             encoding=str,
                              method='html')
         return HtmlPage(body=seed_body)

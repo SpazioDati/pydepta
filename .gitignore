@@ -3,5 +3,7 @@ profiles
 **/*.pyc
 data
 build
+dist
 *egg-info/
 **/*.so
+.venv

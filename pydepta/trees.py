@@ -1,6 +1,4 @@
-from __future__ import division
 import copy
-from past.builtins import xrange
 import numpy as np
 
 from .trees_cython import create_2d_matrix, tree_match
@@ -167,8 +165,8 @@ class SimpleTreeAligner(object):
         alignment_matrix = create_2d_matrix(len(l1), len(l2))
         trace = create_2d_matrix(len(l1), len(l2))
 
-        for i in xrange(1, len(matrix)):
-            for j in xrange(1, len(matrix[0])):
+        for i in range(1, len(matrix)):
+            for j in range(1, len(matrix[0])):
                 if matrix[i][j-1] > matrix[i-1][j]:
                     matrix[i][j] = matrix[i][j-1]
                     trace[i-1][j-1] = TreeAlignment.TRACE_LEFT
@@ -282,8 +280,8 @@ class SimpleTreeAligner(object):
         alignment_matrix = create_2d_matrix(t1_len, t2_len)
         trace = create_2d_matrix(t1_len, t2_len)
 
-        for i in xrange(1, len(matrix)):
-            for j in xrange(1, len(matrix[0])):
+        for i in range(1, len(matrix)):
+            for j in range(1, len(matrix[0])):
                 if matrix[i][j - 1] > matrix[i - 1][j]:
                     matrix[i][j] = matrix[i][j - 1]
                     trace[i - 1][j - 1] = TreeAlignment.TRACE_LEFT

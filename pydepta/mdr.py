@@ -1,6 +1,3 @@
-from __future__ import division
-import six
-from past.builtins import xrange
 from collections import namedtuple, defaultdict, Counter
 import copy
 from io import StringIO
@@ -8,9 +5,6 @@ from lxml import etree
 from lxml.html import tostring, fragment_fromstring
 from .trees import (SimpleTreeMatch, tree_depth, PartialTreeAligner,
                     SimpleTreeAligner, tree_size)
-
-if six.PY3:
-    unicode = str
 
 GeneralizedNode = namedtuple('GeneralizedNode', ['element', 'length'])
 Field = namedtuple('Field', ['text', 'html'])
@@ -22,7 +16,7 @@ def element_repr(e):
 
 def region_to_dict(region):
     return {
-        'parent': tostring(region.parent, encoding=unicode, method='html'),
+        'parent': tostring(region.parent, encoding=str, method='html'),
         'start': region.start,
         'k': region.k,
         'covered': region.covered,
@@ -56,7 +50,7 @@ class Region(object):
     def __getstate__(self):
         odict = self.__dict__.copy()
         odict['parent'] = tostring(odict['parent'],
-                                   encoding=unicode,
+                                   encoding=str,
                                    method='html')
         odict['start'] = odict['start']
         odict['k'] = odict['k']
@@ -89,7 +83,7 @@ class Region(object):
         [[2, 3], [4, 5]]
 
         """
-        for i in xrange(self.start, self.start + self.covered, k):
+        for i in range(self.start, self.start + self.covered, k):
             yield self.parent[i:i + k]
 
     def as_html_table(self, headers=None, show_id=False):
@@ -97,32 +91,32 @@ class Region(object):
         convert the region to a HTML table
         """
         f = StringIO()
-        print >> f, '<table>'
+        print('<table>', file=f)
 
         # print headers
         if headers:
-            print >> f, '<tr>'
+            print('<tr>', file=f)
             if isinstance(headers, dict):
                 if show_id:
-                    print >> f, '<th></th>'
+                    print('<th></th>', file=f)
                 for i in range(len(self.items[0])):
-                    print >> f, '<th>%s</th>' % headers.get(i, '')
+                    print('<th>%s</th>' % headers.get(i, ''), file=f)
             elif isinstance(headers, list):
                 if show_id:
-                    print >> f, '<th></th>'
+                    print('<th></th>', file=f)
                 for h in headers:
-                    print >> f, '<th>%s</th>' % h
-            print >> f, '</tr>'
+                    print('<th>%s</th>' % h, file=f)
+            print('</tr>', file=f)
 
         # print content
         for i, item in enumerate(self.items):
-            print >> f, '<tr>'
+            print('<tr>', file=f)
             if show_id:
-                print >> f, '<td>%s</td>' % (i+1)
+                print('<td>%s</td>' % (i+1), file=f)
             for field in item:
-                print >> f, '<td>%s</td>' % field[0].encode('utf8', 'ignore')
-            print >> f, '</tr>'
-        print >> f, '</table>'
+                print('<td>%s</td>' % field[0], file=f)
+            print('</tr>', file=f)
+        print('</table>', file=f)
 
         return f.getvalue()
 
@@ -184,9 +178,9 @@ def pairwise(a, K, start=0):
      ([4, 5], [6, 7]), ([6, 7], [8, 9]), ([2, 3, 4], [5, 6, 7]), \
      ([5, 6, 7], [8, 9, 10]), ([3, 4, 5], [6, 7, 8]), ([4, 5, 6], [7, 8, 9])]
     """
-    for k in xrange(1, K + 1):
-        for i in xrange(0, K):
-            for j in xrange(start+i, len(a), k):
+    for k in range(1, K + 1):
+        for i in range(0, K):
+            for j in range(start+i, len(a), k):
                 slice_a = a[j:j + k]
                 slice_b = a[j + k: j + 2 * k]
 
@@ -210,7 +204,7 @@ class MiningDataRegion(object):
                 0, root, self.max_generalized_nodes, self.threshold, scores))
             covered = set()
             for data_region in data_regions:
-                for i in xrange(data_region.start, data_region.covered):
+                for i in range(data_region.start, data_region.covered):
                     covered.add(data_region.parent[i])
 
             for child in root:
@@ -224,10 +218,10 @@ class MiningDataRegion(object):
         max_region = Region(parent=root, start=0, k=0, covered=0, score=0)
         data_regions = []
 
-        for k in xrange(1, max_generalized_nodes + 1):
-            for i in xrange(0, max_generalized_nodes):
+        for k in range(1, max_generalized_nodes + 1):
+            for i in range(0, max_generalized_nodes):
                 flag = True
-                for j in xrange(start + i, len(root) - k, k):
+                for j in range(start + i, len(root) - k, k):
                     pair = (GeneralizedNode(root[j], k),
                             GeneralizedNode(root[j + k], k))
                     # Note Johannes: I was getting "Unorderable None >= float"
@@ -313,7 +307,7 @@ class MiningDataRecord(object):
             records = []
             # if all the individual node of children node
             #   of Generalized node are similar
-            for i in xrange(region.start, region.start + region.covered):
+            for i in range(region.start, region.start + region.covered):
                 for child1, child2 in pairwise(region.parent[i], 1, 0):
                     sim = self.stm.normalized_match_score(child1, child2)
                     if sim < self.threshold:
@@ -472,7 +466,7 @@ class MiningDataField(object):
                 r.append(Field(self._get_text(e.text), e))
         else:
             if seed.text and seed.text.strip():
-                r.append(Field(u'', etree.Element('empty')))
+                r.append(Field('', etree.Element('empty')))
 
         # handle children
         for child in seed:
@@ -481,16 +475,16 @@ class MiningDataField(object):
         # handle tail
         if e is not None:
             if seed.tail and seed.tail.strip():
-                r.append(Field(self._get_text(e.tail) or u'', e))
+                r.append(Field(self._get_text(e.tail) or '', e))
         else:
             if seed.tail and seed.tail.strip():
-                r.append(Field(u'', etree.Element('empty')))
+                r.append(Field('', etree.Element('empty')))
 
         return r
 
     def _get_text(self, text):
         if text is not None:
-            if not isinstance(text, unicode):
+            if not isinstance(text, str):
                 return text.decode('utf8', 'ignore')
             return text
-        return u''
+        return ''

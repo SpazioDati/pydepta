@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel", "cython>=0.29", "lxml>=4.0", "numpy>=1.20"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pydepta"
+version = "0.2"
+description = "A Python implementation of DEPTA"
+readme = "README.md"
+authors = [
+    {name = "Terry Peng", email = "pengtaoo@gmail.com"}
+]
+requires-python = ">=3.10"
+dependencies = [
+    "w3lib<2.0",
+    "sd-scrapely",
+    "lxml",
+    "lxml_html_clean",
+    "numpy",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "flake8",
+]
+
+[tool.setuptools]
+packages = ["pydepta", "pydepta.tests"]

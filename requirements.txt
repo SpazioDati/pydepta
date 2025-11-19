@@ -1,6 +1,8 @@
 lxml
-w3lib
-scrapely
+lxml_html_clean
+w3lib<2.0
+sd-scrapely
 flask
 flake8
 future
+pytest
