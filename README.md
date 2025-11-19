@@ -8,7 +8,7 @@ The basic idea is of this algorithm is to extract the data region with tree matc
 and then build a seed tree on top of records to extract aligned data fields.
 
 PyDepta can also extract data with example data (so called supervised learning).
-It relies on [Scrapely](https://github.com/scrapy/scrapely) to extract the structured data after you tell it the data you'd to extract.
+It relies on [Scrapely](https://github.com/SpazioDati/sd-scrapely) to extract the structured data after you tell it the data you'd to extract.
 
 ## Usage
 
@@ -56,11 +56,3 @@ Finally just tell the PyDepta to scrape other similar pages on that site and it 
 {u'text': [u'We hebben hier echt genoten van heerlijke vers bereide gerechten met een mooi wijnarrangement. Alles was goed op smaak. Mooie stadsreiniging en vriendelijke bediening. \nHier komen we graag terug'], u'name': [u'Vic1980']}
 {u'text': [u'Heerlijk eten, niveau sterrenrestaurant. Rare omgeving: in een nauwe straat ver van het centrum. Veel te langzame bediening, maar wel vriendelijk. We hebben hier een ANWB menu gegeten. Heel mals rundvlees en als voorgerecht forelmousse en als nagerecht broodpudding.'], u'name': [u'Mathilde30']}
 ```
-
-## Author
-
-pengtaoo AT gmail.com
-
-## Deployment
-
-http://pydepta-heroku.herokuapp.com/
