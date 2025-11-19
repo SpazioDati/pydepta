@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel", "cython>=0.29", "lxml>=4.0", "numpy>=1.20"]
+requires = ["setuptools>=61.0", "setuptools-scm>=8.0", "wheel", "cython>=0.29", "lxml>=4.0", "numpy>=1.20"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "pydepta"
-version = "0.2"
+name = "sd-pydepta"
+dynamic = ["version"]
 description = "A Python implementation of DEPTA"
 readme = "README.md"
 authors = [
@@ -27,3 +27,6 @@ dev = [
 
 [tool.setuptools]
 packages = ["pydepta", "pydepta.tests"]
+
+[tool.setuptools_scm]
+version_file = "pydepta/_version.py"

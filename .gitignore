@@ -1,9 +1,11 @@
 profiles
 **/__pycache__
 **/*.pyc
+**/*.c
 data
 build
 dist
 *egg-info/
 **/*.so
 .venv
+pydepta/_version.py
