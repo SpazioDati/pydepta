@@ -100,7 +100,7 @@ class DeptaTest(unittest.TestCase):
             for k, vs in case.items():
                 if 'region-index' in case:
                     region_index = case['region-index']
-                    self.assertEquals(self._normalize_region_text(
+                    self.assertEqual(self._normalize_region_text(
                         regions[region_index]), texts)
                 if k == 'regions':
                     start_elements = [(element_repr(

@@ -35,7 +35,7 @@ setup(name='pydepta',
                         "with Partial Tree Alignment)"),
       author="Terry Peng",
       author_email="pengtaoo@gmail.com",
-      install_requires=['w3lib', 'scrapely'],
+      install_requires=['w3lib', 'sd-scrapely'],
       packages=find_packages(),
       cmdclass=cmdclass,
       ext_modules=ext_modules
